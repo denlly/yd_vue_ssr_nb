@@ -1,0 +1,1 @@
+cmd /K "E:\vsproduct\codetest\DataCache\redis\redis-server.exe"
