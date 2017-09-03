@@ -1,0 +1,58 @@
+﻿@using MyTestMVC.Controllers;
+
+@model MyTestMVC.Controllers.Book
+
+
+<div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Project name</h3>
+      </div>
+
+	<form action="@Url.Action("Submit")" method="post" id="form_main">
+      <div class="jumbotron">
+		
+		<dl>
+            <dt>
+                <label for="BookNO"> 书号</label>				
+			</dt>
+			<dd>
+                <input name="BookNO" id="txt_BookNO" text="@Model.BookNO" class="form-control" />
+			</dd>
+			<dt>
+                <label for="BookNO"> 书名</label>             
+            </dt>
+            <dd>
+                <input name="BookName" id="txt_BookName" text="@Model.BookName" class="form-control"  />
+            </dd>
+			<dt>
+                <label for="BookDesc"> 解释</label>             
+            </dt>
+            <dd>
+				<textarea name="BookDesc" class="form-control" rows="3"  id="txt_BookDesc">@Model.BookDesc</textarea>
+            </dd>
+			<dt>
+                <label for="BookImg"> 图片</label>             
+            </dt>
+            <dd>
+                <input type="file" name="BookImg" id="txt_BookImg" text="@Model.BookImg" />
+            </dd>
+		</dl>
+
+        <p><a class="btn btn-lg btn-success" href="#" role="button" id="btn_sumbit">Sumbit</a></p>
+      </div>
+
+      </form>
+
+      <footer class="footer">
+        <p>© 2017 yideng-nb, Inc.</p>
+      </footer>
+
+    </div>
+    <script></script>

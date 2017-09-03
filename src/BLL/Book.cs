@@ -8,19 +8,19 @@ using Maticsoft.IDAL;
 namespace Maticsoft.BLL
 {
 	/// <summary>
-	/// user
+	/// Book
 	/// </summary>
-	public partial class user
+	public partial class Book
 	{
-        private readonly Iuser dal=DataAccess.Createuser(); 
-		public user()
+		private readonly IBook dal=DataAccess.CreateBook();
+		public Book()
 		{}
 		#region  BasicMethod
 
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
-		public bool Add(Maticsoft.Model.user model)
+		public int  Add(Maticsoft.Model.Book model)
 		{
 			return dal.Add(model);
 		}
@@ -28,7 +28,7 @@ namespace Maticsoft.BLL
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		public bool Update(Maticsoft.Model.user model)
+		public bool Update(Maticsoft.Model.Book model)
 		{
 			return dal.Update(model);
 		}
@@ -36,34 +36,41 @@ namespace Maticsoft.BLL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete()
+		public bool Delete(int ID)
 		{
-			//该表无主键信息，请自定义主键/条件字段
-			return dal.Delete();
+			
+			return dal.Delete(ID);
+		}
+		/// <summary>
+		/// 删除一条数据
+		/// </summary>
+		public bool DeleteList(string IDlist )
+		{
+			return dal.DeleteList(IDlist );
 		}
 
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public Maticsoft.Model.user GetModel()
+		public Maticsoft.Model.Book GetModel(int ID)
 		{
-			//该表无主键信息，请自定义主键/条件字段
-			return dal.GetModel();
+			
+			return dal.GetModel(ID);
 		}
 
 		/// <summary>
 		/// 得到一个对象实体，从缓存中
 		/// </summary>
-		public Maticsoft.Model.user GetModelByCache()
+		public Maticsoft.Model.Book GetModelByCache(int ID)
 		{
-			//该表无主键信息，请自定义主键/条件字段
-			string CacheKey = "userModel-" ;
+			
+			string CacheKey = "BookModel-" + ID;
 			object objModel = Maticsoft.Common.DataCache.GetCache(CacheKey);
 			if (objModel == null)
 			{
 				try
 				{
-					objModel = dal.GetModel();
+					objModel = dal.GetModel(ID);
 					if (objModel != null)
 					{
 						int ModelCache = Maticsoft.Common.ConfigHelper.GetConfigInt("ModelCache");
@@ -72,7 +79,7 @@ namespace Maticsoft.BLL
 				}
 				catch{}
 			}
-			return (Maticsoft.Model.user)objModel;
+			return (Maticsoft.Model.Book)objModel;
 		}
 
 		/// <summary>
@@ -92,7 +99,7 @@ namespace Maticsoft.BLL
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>
-		public List<Maticsoft.Model.user> GetModelList(string strWhere)
+		public List<Maticsoft.Model.Book> GetModelList(string strWhere)
 		{
 			DataSet ds = dal.GetList(strWhere);
 			return DataTableToList(ds.Tables[0]);
@@ -100,13 +107,13 @@ namespace Maticsoft.BLL
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>
-		public List<Maticsoft.Model.user> DataTableToList(DataTable dt)
+		public List<Maticsoft.Model.Book> DataTableToList(DataTable dt)
 		{
-			List<Maticsoft.Model.user> modelList = new List<Maticsoft.Model.user>();
+			List<Maticsoft.Model.Book> modelList = new List<Maticsoft.Model.Book>();
 			int rowsCount = dt.Rows.Count;
 			if (rowsCount > 0)
 			{
-				Maticsoft.Model.user model;
+				Maticsoft.Model.Book model;
 				for (int n = 0; n < rowsCount; n++)
 				{
 					model = dal.DataRowToModel(dt.Rows[n]);

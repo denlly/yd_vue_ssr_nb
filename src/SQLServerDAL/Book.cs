@@ -7,11 +7,11 @@ using Maticsoft.DBUtility;//Please add references
 namespace Maticsoft.SQLServerDAL
 {
 	/// <summary>
-	/// 数据访问类:user
+	/// 数据访问类:Book
 	/// </summary>
-	public partial class user:Iuser
+	public partial class Book:IBook
 	{
-		public user()
+		public Book()
 		{}
 		#region  BasicMethod
 
@@ -20,49 +20,55 @@ namespace Maticsoft.SQLServerDAL
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
-		public bool Add(Maticsoft.Model.user model)
+		public int Add(Maticsoft.Model.Book model)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("insert into [user](");
-			strSql.Append("id,username,password)");
+			strSql.Append("insert into Book(");
+			strSql.Append("BookNO,BookImg,BookName,BookDesc)");
 			strSql.Append(" values (");
-			strSql.Append("@id,@username,@password)");
+			strSql.Append("@BookNO,@BookImg,@BookName,@BookDesc)");
+			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
-					new SqlParameter("@id", SqlDbType.Int,4),
-					new SqlParameter("@username", SqlDbType.NVarChar,50),
-					new SqlParameter("@password", SqlDbType.NVarChar,50)};
-			parameters[0].Value = model.id;
-			parameters[1].Value = model.username;
-			parameters[2].Value = model.password;
+					new SqlParameter("@BookNO", SqlDbType.NVarChar,50),
+					new SqlParameter("@BookImg", SqlDbType.NVarChar,-1),
+					new SqlParameter("@BookName", SqlDbType.NVarChar,50),
+					new SqlParameter("@BookDesc", SqlDbType.NVarChar,50)};
+			parameters[0].Value = model.BookNO;
+			parameters[1].Value = model.BookImg;
+			parameters[2].Value = model.BookName;
+			parameters[3].Value = model.BookDesc;
 
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
-			if (rows > 0)
+			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
+			if (obj == null)
 			{
-				return true;
+				return 0;
 			}
 			else
 			{
-				return false;
+				return Convert.ToInt32(obj);
 			}
 		}
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		public bool Update(Maticsoft.Model.user model)
+		public bool Update(Maticsoft.Model.Book model)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("update user set ");
-			strSql.Append("id=@id,");
-			strSql.Append("username=@username,");
-			strSql.Append("password=@password");
-			strSql.Append(" where ");
+			strSql.Append("update Book set ");
+			strSql.Append("BookNO=@BookNO,");
+			strSql.Append("BookImg=@BookImg,");
+			strSql.Append("BookName=@BookName,");
+			strSql.Append("BookDesc=@BookDesc");
+			strSql.Append(" where ID=@ID");
 			SqlParameter[] parameters = {
-					new SqlParameter("@id", SqlDbType.Int,4),
-					new SqlParameter("@username", SqlDbType.NVarChar,50),
-					new SqlParameter("@password", SqlDbType.NVarChar,50)};
-			parameters[0].Value = model.id;
-			parameters[1].Value = model.username;
-			parameters[2].Value = model.password;
+					new SqlParameter("@BookNO", SqlDbType.NVarChar,50),
+					new SqlParameter("@BookImg", SqlDbType.NVarChar,-1),
+					new SqlParameter("@BookName", SqlDbType.NVarChar,50),
+					new SqlParameter("@BookDesc", SqlDbType.NVarChar,50)};
+			parameters[0].Value = model.BookNO;
+			parameters[1].Value = model.BookImg;
+			parameters[2].Value = model.BookName;
+			parameters[3].Value = model.BookDesc;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -78,16 +84,36 @@ namespace Maticsoft.SQLServerDAL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete()
+		public bool Delete(int ID)
 		{
-			//该表无主键信息，请自定义主键/条件字段
+			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("delete from user ");
-			strSql.Append(" where ");
+			strSql.Append("delete from Book ");
+			strSql.Append(" where ID=@ID");
 			SqlParameter[] parameters = {
+					new SqlParameter("@ID", SqlDbType.Int,4)
 			};
+			parameters[0].Value = ID;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 批量删除数据
+		/// </summary>
+		public bool DeleteList(string IDlist )
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("delete from Book ");
+			strSql.Append(" where ID in ("+IDlist + ")  ");
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString());
 			if (rows > 0)
 			{
 				return true;
@@ -102,16 +128,18 @@ namespace Maticsoft.SQLServerDAL
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public Maticsoft.Model.user GetModel()
+		public Maticsoft.Model.Book GetModel(int ID)
 		{
-			//该表无主键信息，请自定义主键/条件字段
+			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,username,password from user ");
-			strSql.Append(" where ");
+			strSql.Append("select  top 1 ID,BookNO,BookImg,BookName,BookDesc from Book ");
+			strSql.Append(" where ID=@ID");
 			SqlParameter[] parameters = {
+					new SqlParameter("@ID", SqlDbType.Int,4)
 			};
+			parameters[0].Value = ID;
 
-			Maticsoft.Model.user model=new Maticsoft.Model.user();
+			Maticsoft.Model.Book model=new Maticsoft.Model.Book();
 			DataSet ds=DbHelperSQL.Query(strSql.ToString(),parameters);
 			if(ds.Tables[0].Rows.Count>0)
 			{
@@ -127,22 +155,27 @@ namespace Maticsoft.SQLServerDAL
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public Maticsoft.Model.user DataRowToModel(DataRow row)
+		public Maticsoft.Model.Book DataRowToModel(DataRow row)
 		{
-			Maticsoft.Model.user model=new Maticsoft.Model.user();
+			Maticsoft.Model.Book model=new Maticsoft.Model.Book();
 			if (row != null)
 			{
-				if(row["id"]!=null && row["id"].ToString()!="")
+				
+				if(row["BookNO"]!=null)
 				{
-					model.id=int.Parse(row["id"].ToString());
+					model.BookNO=row["BookNO"].ToString();
 				}
-				if(row["username"]!=null)
+				if(row["BookImg"]!=null)
 				{
-					model.username=row["username"].ToString();
+					model.BookImg=row["BookImg"].ToString();
 				}
-				if(row["password"]!=null)
+				if(row["BookName"]!=null)
 				{
-					model.password=row["password"].ToString();
+					model.BookName=row["BookName"].ToString();
+				}
+				if(row["BookDesc"]!=null)
+				{
+					model.BookDesc=row["BookDesc"].ToString();
 				}
 			}
 			return model;
@@ -154,8 +187,8 @@ namespace Maticsoft.SQLServerDAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,username,password ");
-			strSql.Append(" FROM user ");
+			strSql.Append("select ID,BookNO,BookImg,BookName,BookDesc ");
+			strSql.Append(" FROM Book ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -174,8 +207,8 @@ namespace Maticsoft.SQLServerDAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,username,password ");
-			strSql.Append(" FROM user ");
+			strSql.Append(" ID,BookNO,BookImg,BookName,BookDesc ");
+			strSql.Append(" FROM Book ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -190,7 +223,7 @@ namespace Maticsoft.SQLServerDAL
 		public int GetRecordCount(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select count(1) FROM user ");
+			strSql.Append("select count(1) FROM Book ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -219,9 +252,9 @@ namespace Maticsoft.SQLServerDAL
 			}
 			else
 			{
-				strSql.Append("order by T. desc");
+				strSql.Append("order by T.ID desc");
 			}
-			strSql.Append(")AS Row, T.*  from user T ");
+			strSql.Append(")AS Row, T.*  from Book T ");
 			if (!string.IsNullOrEmpty(strWhere.Trim()))
 			{
 				strSql.Append(" WHERE " + strWhere);
@@ -246,8 +279,8 @@ namespace Maticsoft.SQLServerDAL
 					new SqlParameter("@OrderType", SqlDbType.Bit),
 					new SqlParameter("@strWhere", SqlDbType.VarChar,1000),
 					};
-			parameters[0].Value = "user";
-			parameters[1].Value = "";
+			parameters[0].Value = "Book";
+			parameters[1].Value = "ID";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;
 			parameters[4].Value = 0;

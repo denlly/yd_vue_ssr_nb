@@ -89,5 +89,16 @@ namespace Maticsoft.DALFactory
 			return (Maticsoft.IDAL.Iuser)objType;
 		}
 
+		/// <summary>
+		/// 创建book数据层接口。
+		/// </summary>
+		public static Maticsoft.IDAL.IBook CreateBook()
+		{
+
+			string ClassNamespace = AssemblyPath + ".Book";
+			object objType = CreateObject(AssemblyPath, ClassNamespace);
+			return (Maticsoft.IDAL.IBook)objType;
+		}
+
 }
 }

@@ -3,28 +3,29 @@ using System.Data;
 namespace Maticsoft.IDAL
 {
 	/// <summary>
-	/// 接口层user
+	/// 接口层Book
 	/// </summary>
-	public interface Iuser
+	public interface IBook
 	{
 		#region  成员方法
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
-		bool Add(Maticsoft.Model.user model);
+		int Add(Maticsoft.Model.Book model);
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		bool Update(Maticsoft.Model.user model);
+		bool Update(Maticsoft.Model.Book model);
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		bool Delete();
+		bool Delete(int ID);
+		bool DeleteList(string IDlist );
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		Maticsoft.Model.user GetModel();
-		Maticsoft.Model.user DataRowToModel(DataRow row);
+		Maticsoft.Model.Book GetModel(int ID);
+		Maticsoft.Model.Book DataRowToModel(DataRow row);
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>
